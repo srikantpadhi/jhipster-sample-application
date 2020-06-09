@@ -1,0 +1,26 @@
+version: '2'
+services:
+  appzillononboarding-app:
+    image: appzillononboarding
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_DATA_MONGODB_URI=mongodb://appzillononboarding-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=appzillononboarding
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+  appzillononboarding-mongodb:
+    extends:
+      file: mongodb.yml
+      service: appzillononboarding-mongodb
+  consul:
+    extends:
+      file: consul.yml
+      service: consul
+
+  consul-config-loader:
+    extends:
+      file: consul.yml
+      service: consul-config-loader
